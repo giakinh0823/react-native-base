@@ -1,58 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import Skateboard from "../../../assets/images/Skateboard.png";
-import Ski from "../../../assets/images/Ski.png";
-import Snowboard from "../../../assets/images/Snowboard.png";
-import Snowshoe from "../../../assets/images/Snowshoe.png";
-import Surf from "../../../assets/images/Surf.png";
-import Surfboard from "../../../assets/images/Surfboard.png";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { Category } from "../../../models";
+import { categoryActions, selectCategoryList } from "../categorySlice";
 import ProductItem from "./ProductItem";
-
-const listProduct: any[] = [
-  {
-    id: 1,
-    name: "Ván trượt truyết",
-    image: Ski,
-    price: "50",
-    sale: "10%",
-  },
-  {
-    id: 2,
-    name: "Ván Snowboard 360",
-    image: Snowboard,
-    price: "15",
-    sale: "40%",
-  },
-  {
-    id: 3,
-    name: "Giày Snowshoe",
-    image: Snowshoe,
-    price: "30",
-    sale: "30%",
-  },
-  {
-    id: 4,
-    name: "Ván Skateboard Super",
-    image: Skateboard,
-    price: "49",
-    sale: "20%",
-  },
-  { id: 5, name: "Ván Surf BT5", image: Surf, price: "4.100.000", sale: "10%" },
-  {
-    id: 6,
-    name: "Cặp Ván Surfboard",
-    image: Surfboard,
-    price: "58",
-    sale: "50%",
-  },
-];
-
+import { cartActions } from "../../CartScreen/cartSlice";
 interface Props {
   navigation: any;
 }
 
 const ProductList = ({ navigation }: Props) => {
-  const [products, setProducts] = useState(listProduct);
+  const dispatch = useAppDispatch();
+  const products = useAppSelector(selectCategoryList);
+
+  useEffect(() => {
+    dispatch(categoryActions.fetchCategoryList());
+  }, []);
+
+  const addCart = (product: Category) => {
+    const cart = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      sale: product.sale,
+      quantity: 1,
+    };
+    dispatch(cartActions.addCart(cart));
+  };
 
   return (
     <View style={styles.container}>
@@ -69,6 +44,7 @@ const ProductList = ({ navigation }: Props) => {
                   product: item,
                 });
               }}
+              addCart={addCart}
             />
           </View>
         )}
@@ -91,10 +67,11 @@ const styles = StyleSheet.create({
   listProduct: {
     paddingLeft: 8,
     paddingRight: 8,
+    paddingTop: 20,
   },
   item: {
     flex: 1,
     paddingLeft: 8,
     paddingRight: 8,
-  }
+  },
 });

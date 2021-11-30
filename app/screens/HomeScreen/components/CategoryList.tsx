@@ -55,5 +55,6 @@ const styles = StyleSheet.create({
   listCategory: {
     paddingLeft: 20,
     paddingRight: 20,
+    paddingTop: 20,
   },
 });

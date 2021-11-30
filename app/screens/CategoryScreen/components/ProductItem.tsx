@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
+import { Category } from "../../../models/Category";
 
 interface ProductItemProps {
-  product: any;
+  product: Category;
   onPress: () => void;
+  addCart: any;
 }
 
-const ProductItem = ({ product, onPress }: ProductItemProps) => {
+const ProductItem = ({ product, onPress, addCart }: ProductItemProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
@@ -21,7 +23,7 @@ const ProductItem = ({ product, onPress }: ProductItemProps) => {
           <Text style={styles.text}>{product.name}</Text>
           <View style={styles.priceContainer}>
             <Text style={styles.price}>{product.price}$</Text>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => addCart(product)}>
               <Text style={styles.buttonColor}>MUA</Text>
             </TouchableOpacity>
           </View>

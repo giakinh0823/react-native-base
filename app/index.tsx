@@ -9,6 +9,8 @@ import OrderScreen from "./screens/OrderScreen";
 import SettingScreen from "./screens/SettingScreen";
 import CartScreen from "./screens/CartScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAppSelector } from './app/hooks';
+import { selectCartQuantity } from "./screens/CartScreen/cartSlice";
 
 interface Props {}
 
@@ -85,6 +87,9 @@ const NavSetting = () => {
 };
 
 export const App = (props: Props) => {
+
+  const cartQuantity = useAppSelector(selectCartQuantity);
+
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
@@ -106,6 +111,7 @@ export const App = (props: Props) => {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="cart" color={color} size={size} />
             ),
+            tabBarBadge: cartQuantity > 0 ? cartQuantity : undefined,
           }}
         />
         <Tab.Screen
