@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { useAppSelector } from "../../app/hooks";
-import { selectCartTotal } from "./cartSlice";
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { cartActions, selectCartList, selectCartTotal } from "./cartSlice";
 import CartList from "./components/CartList";
 import Checkout from "./components/Checkout";
+import { orderActions } from '../OrderScreen/OrderSlice';
 
 interface Props {
   navigation: any;
@@ -11,18 +12,26 @@ interface Props {
 
 const CartScreen = ({ navigation }: Props) => {
   const [total, setTotal] = React.useState(0);
+  const dispatch = useAppDispatch();
   const totalPrice = useAppSelector(selectCartTotal);
+  const cartList = useAppSelector(selectCartList);
+
   useEffect(() => {
     setTotal(totalPrice);
   }, [totalPrice]);
+
+  const checkout = () => {
+    dispatch(orderActions.addOrder(cartList));
+    dispatch(cartActions.removeAllCart());
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       {total != 0 && (
         <>
-          <CartList navigation={navigation} />
+          <CartList navigation={navigation} cartList={cartList}/>
           <View>
-            <Checkout totalPrice={total} />
+            <Checkout totalPrice={total} checkout={checkout}/>
           </View>
         </>
       )}

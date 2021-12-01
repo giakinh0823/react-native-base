@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { selectCartList, cartActions } from '../cartSlice';
+import React from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { useAppDispatch } from "../../../app/hooks";
+import { Cart } from "../../../models";
+import { cartActions } from '../cartSlice';
 import CartItem from "./CartItem";
 
 interface Props {
   navigation: any;
+  cartList: Cart[];
 }
 
-const CartList = ({ navigation }: Props) => {
+const CartList = ({ navigation,cartList }: Props) => {
   const dispatch = useAppDispatch();
-  const cartList = useAppSelector(selectCartList);
 
   const setQuantity = (productId: number, quantity: number) => {
     dispatch(cartActions.setQuantity({id: productId, quantity: quantity}));

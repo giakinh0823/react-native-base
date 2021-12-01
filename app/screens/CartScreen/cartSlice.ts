@@ -86,6 +86,13 @@ const cartSlice = createSlice({
       state.list = state.list.filter((item) => item.id !== id);
       state.loading = false;
     },
+    removeAllCart(state) {
+      state.loading = true;
+    },
+    removeAllCartSuccess(state) {
+      state.list = [];
+      state.loading = false;
+    },
   },
 });
 

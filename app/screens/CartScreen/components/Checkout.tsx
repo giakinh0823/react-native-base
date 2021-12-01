@@ -3,16 +3,17 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
     totalPrice: number;
+    checkout: () => void;
 }
 
-const Checkout = ({totalPrice}: Props) => {
+const Checkout = ({totalPrice, checkout}: Props) => {
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.label}>Tổng</Text>
         <Text style={styles.price}>{totalPrice}$</Text>
       </View>
-      <TouchableOpacity activeOpacity={0.7}>
+      <TouchableOpacity activeOpacity={0.7} onPress={() => checkout()}>
         <View style={styles.button}>
           <Text style={styles.checkout}>Đặt hàng</Text>
         </View>
