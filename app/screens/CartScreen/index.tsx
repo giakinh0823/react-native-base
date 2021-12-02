@@ -17,6 +17,10 @@ const CartScreen = ({ navigation }: Props) => {
   const cartList = useAppSelector(selectCartList);
 
   useEffect(() => {
+    dispatch(cartActions.fetchCartList());
+  }, [dispatch]);
+
+  useEffect(() => {
     setTotal(totalPrice);
   }, [totalPrice]);
 

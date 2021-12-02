@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import OrderList from "./components/OrderList";
-import { selectOrderTotal, selectOrderList } from './OrderSlice';
+import { selectOrderTotal, selectOrderList, orderActions } from './OrderSlice';
 
 interface Props {
   navigation: any;
@@ -12,11 +12,11 @@ const OrderScreen = ({ navigation }: Props) => {
   const [total, setTotal] = React.useState(0);
   const totalPrice = useAppSelector(selectOrderTotal);
   const orderList = useAppSelector(selectOrderList);
-  const [listOrder, setListOrder] = React.useState(orderList);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setListOrder(orderList);
-  },[orderList])
+    dispatch(orderActions.fetchOrderList());
+  }, [dispatch]);
 
   useEffect(() => {
     setTotal(totalPrice);
@@ -26,7 +26,7 @@ const OrderScreen = ({ navigation }: Props) => {
     <SafeAreaView style={styles.container}>
       {total != 0 && (
         <>
-          <OrderList navigation={navigation} orderList={listOrder}/>
+          <OrderList navigation={navigation} orderList={orderList}/>
         </>
       )}
       {total == 0 && (

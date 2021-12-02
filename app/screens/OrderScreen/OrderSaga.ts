@@ -2,6 +2,20 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { put, takeLatest } from "redux-saga/effects";
 import { Cart } from '../../models';
 import { orderActions } from './OrderSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+function* fetchOrders() {
+  try {
+    const orders : any = async () => {
+        return await AsyncStorage.getItem("@orders");
+    };
+    if (orders !== null) {
+      yield put(orderActions.fetchOrderSuccess(JSON.parse(orders)));
+    }
+  } catch (error) {
+    yield put(orderActions.fetchOrderFailed());
+  }
+}
 
 function* addOrder(action: PayloadAction<Cart[]>){
     try{
@@ -15,5 +29,6 @@ function* addOrder(action: PayloadAction<Cart[]>){
 
 
 export default function* orderSaga() {
+    yield takeLatest(orderActions.fetchOrderList.type, fetchOrders);
     yield takeLatest(orderActions.addOrder.type, addOrder);
 }

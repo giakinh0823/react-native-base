@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { Cart } from "../../models";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export interface CartState {
   loading: boolean;
   list: Cart[];
@@ -41,6 +41,13 @@ const cartSlice = createSlice({
       } else {
         state.list[index].quantity += cart.quantity;
       }
+      ;(async () => {
+        try {
+          await AsyncStorage.setItem("@carts", JSON.stringify(state.list));
+        } catch (error) {
+          console.log(error);
+        }
+      })();
       state.loading = false;
     },
     addCartFail(state) {
