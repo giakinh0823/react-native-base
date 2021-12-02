@@ -3,13 +3,13 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface CategoryItemProps {
   category: any;
-  onPress: () => void;
+  onPress: any;
 }
 
 const CategoryItem = ({category, onPress }: CategoryItemProps) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
+      <TouchableOpacity activeOpacity={0.5} onPress={() => onPress(category)}>
         <View style={styles.content}>
           <Text style={styles.text}>{category.name}</Text>
           <Image source={category.image} style={styles.image} />
@@ -19,7 +19,7 @@ const CategoryItem = ({category, onPress }: CategoryItemProps) => {
   );
 };
 
-export default CategoryItem;
+export default React.memo(CategoryItem);
 
 const styles = StyleSheet.create({
   container: {

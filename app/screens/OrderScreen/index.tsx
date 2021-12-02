@@ -9,7 +9,6 @@ interface Props {
 }
 
 const OrderScreen = ({ navigation }: Props) => {
-  const [total, setTotal] = React.useState(0);
   const totalPrice = useAppSelector(selectOrderTotal);
   const orderList = useAppSelector(selectOrderList);
   const dispatch = useAppDispatch();
@@ -18,18 +17,14 @@ const OrderScreen = ({ navigation }: Props) => {
     dispatch(orderActions.fetchOrderList());
   }, [dispatch]);
 
-  useEffect(() => {
-    setTotal(totalPrice);
-  }, [totalPrice]);
-
   return (
     <SafeAreaView style={styles.container}>
-      {total != 0 && (
+      {totalPrice != 0 && (
         <>
           <OrderList navigation={navigation} orderList={orderList}/>
         </>
       )}
-      {total == 0 && (
+      {totalPrice == 0 && (
         <View>
           <Text style={styles.label}>Chưa có sản phẩm được mua!</Text>
         </View>

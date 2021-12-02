@@ -2,7 +2,7 @@ import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { useAppDispatch } from "../../../app/hooks";
 import { Cart } from "../../../models";
-import { cartActions } from '../cartSlice';
+import { cartActions } from "../cartSlice";
 import CartItem from "./CartItem";
 
 interface Props {
@@ -10,16 +10,26 @@ interface Props {
   cartList: Cart[];
 }
 
-const CartList = ({ navigation,cartList }: Props) => {
-  const dispatch = useAppDispatch();
+const CartList = ({ navigation, cartList }: Props) => {
+  const dispatch = React.useCallback(useAppDispatch(), []);
 
-  const setQuantity = (productId: number, quantity: number) => {
-    dispatch(cartActions.setQuantity({id: productId, quantity: quantity}));
-  };
+  const setQuantity = React.useCallback(
+    (productId: number, quantity: number) => {
+      dispatch(cartActions.setQuantity({ id: productId, quantity: quantity }));
+    },
+    []
+  );
 
-  const removeCart = (productId: number) => {
+  const removeCart = React.useCallback((productId: number) => {
     dispatch(cartActions.removeCart(productId));
-  };
+  }, []);
+
+  const handleOnpress = React.useCallback((product: Cart) => {
+    navigation.navigate("Product", {
+      name: product.name,
+      product: product,
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -29,13 +39,7 @@ const CartList = ({ navigation,cartList }: Props) => {
           <View style={styles.item}>
             <CartItem
               cart={item}
-              onPress={() => {
-                const product = { ...item, quantity: undefined };
-                navigation.navigate("Product", {
-                  name: item.name,
-                  product: product,
-                });
-              }}
+              onPress={handleOnpress}
               setQuantity={setQuantity}
               removeCart={removeCart}
             />
@@ -48,7 +52,7 @@ const CartList = ({ navigation,cartList }: Props) => {
   );
 };
 
-export default CartList;
+export default React.memo(CartList);
 
 const styles = StyleSheet.create({
   container: {

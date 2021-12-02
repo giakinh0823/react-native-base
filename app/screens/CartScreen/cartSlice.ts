@@ -113,3 +113,7 @@ export const selectCartQuantity = (state: RootState) => state.cart.quantity;
 //reducer
 const cartReducer = cartSlice.reducer;
 export default cartReducer;
+
+
+
+

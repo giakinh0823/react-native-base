@@ -66,7 +66,7 @@ const OrderItem = ({ order, navigation }: Props) => {
   );
 };
 
-export default OrderItem;
+export default React.memo(OrderItem);
 
 const styles = StyleSheet.create({
   container: {

@@ -29,7 +29,7 @@ const OrderList = ({ navigation, orderList }: Props) => {
   );
 };
 
-export default OrderList;
+export default React.memo(OrderList);
 
 const styles = StyleSheet.create({
   container: {

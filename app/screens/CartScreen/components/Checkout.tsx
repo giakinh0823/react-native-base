@@ -7,6 +7,7 @@ interface Props {
 }
 
 const Checkout = ({totalPrice, checkout}: Props) => {
+
   return (
     <View style={styles.container}>
       <View>

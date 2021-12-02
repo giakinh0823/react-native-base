@@ -7,6 +7,7 @@ import Snowshoe from "../../../assets/images/Snowshoe.png";
 import Skateboard from "../../../assets/images/Skateboard.png";
 import Surf from "../../../assets/images/Surf.png";
 import Surfboard from "../../../assets/images/Surfboard.png";
+import { Category } from "../../../models/Category";
 
 const listCategory: any[] = [
   { id: 1, name: "Ski", image: Ski },
@@ -24,17 +25,16 @@ interface Props {
 const CategoryList = ({ navigation }: Props) => {
   const [categories, setCategories] = useState(listCategory);
 
+  const handleOnpress = React.useCallback((category: Category) => {
+    navigation.navigate("Category", { name: category.name, category: category });
+  }, []);
+
   return (
     <View style={styles.container}>
       <FlatList
         data={categories}
         renderItem={({ item }) => (
-          <CategoryItem
-            category={item}
-            onPress={() => {
-              navigation.navigate("Category", {name: item.name,category: item});
-            }}
-          />
+          <CategoryItem category={item} onPress={handleOnpress} />
         )}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listCategory}
@@ -43,7 +43,7 @@ const CategoryList = ({ navigation }: Props) => {
   );
 };
 
-export default CategoryList;
+export default React.memo(CategoryList);
 
 const styles = StyleSheet.create({
   container: {

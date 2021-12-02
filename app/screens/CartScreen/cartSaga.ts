@@ -1,8 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Action, PayloadAction } from "@reduxjs/toolkit";
-import { call, put, takeLatest } from "redux-saga/effects";
+import { put, takeLatest } from "redux-saga/effects";
 import { Cart } from "../../models/Cart";
 import { cartActions } from "./cartSlice";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function* fetchCarts() {
   try {

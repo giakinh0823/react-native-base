@@ -14,7 +14,7 @@ const CartItem = ({ cart, onPress, setQuantity, removeCart }: Props) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
+      <TouchableOpacity activeOpacity={0.5} onPress={() => onPress({ ...cart, quantity: undefined })}>
         <View style={styles.layout}>
           <TouchableOpacity style={styles.close} onPress={() => removeCart(cart.id)}>
             <MaterialCommunityIcons name="close" size={15}/>
@@ -44,7 +44,7 @@ const CartItem = ({ cart, onPress, setQuantity, removeCart }: Props) => {
   );
 };
 
-export default CartItem;
+export default React.memo(CartItem);
 
 const styles = StyleSheet.create({
   container: {
