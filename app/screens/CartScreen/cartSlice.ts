@@ -98,6 +98,13 @@ const cartSlice = createSlice({
     },
     removeAllCartSuccess(state) {
       state.list = [];
+      ;(async () => {
+        try {
+          await AsyncStorage.setItem("@carts", JSON.stringify(state.list));
+        } catch (error) {
+          console.log(error);
+        }
+      })();
       state.loading = false;
     },
   },

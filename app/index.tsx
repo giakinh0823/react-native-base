@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HomeScreen from "./screens/HomeScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -9,8 +9,8 @@ import OrderScreen from "./screens/OrderScreen";
 import SettingScreen from "./screens/SettingScreen";
 import CartScreen from "./screens/CartScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useAppSelector } from './app/hooks';
-import { selectCartQuantity } from "./screens/CartScreen/cartSlice";
+import { useAppSelector, useAppDispatch } from './app/hooks';
+import { selectCartQuantity, cartActions } from './screens/CartScreen/cartSlice';
 
 interface Props {}
 
@@ -89,6 +89,12 @@ const NavSetting = () => {
 export const App = (props: Props) => {
 
   const cartQuantity = useAppSelector(selectCartQuantity);
+  
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(cartActions.fetchCartList());
+  }, [dispatch]);
 
   return (
     <NavigationContainer>

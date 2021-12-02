@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { orderActions } from '../OrderScreen/OrderSlice';
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { orderActions } from "../OrderScreen/OrderSlice";
 import { cartActions, selectCartList, selectCartTotal } from "./cartSlice";
 import CartList from "./components/CartList";
 import Checkout from "./components/Checkout";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Props {
   navigation: any;
@@ -19,18 +20,18 @@ const CartScreen = ({ navigation }: Props) => {
     dispatch(cartActions.fetchCartList());
   }, [dispatch]);
 
-  const checkout = () => {
+  const checkout = React.useCallback(() => {
     dispatch(orderActions.addOrder(cartList));
     dispatch(cartActions.removeAllCart());
-  }
+  }, [cartList]);
 
   return (
     <SafeAreaView style={styles.container}>
       {totalPrice != 0 && (
         <>
-          <CartList navigation={navigation} cartList={cartList}/>
+          <CartList navigation={navigation} cartList={cartList} />
           <View>
-            <Checkout totalPrice={totalPrice} checkout={checkout}/>
+            <Checkout totalPrice={totalPrice} checkout={checkout} />
           </View>
         </>
       )}
@@ -53,6 +54,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   label: {
-      textAlign: "center",
-  }
+    textAlign: "center",
+  },
 });

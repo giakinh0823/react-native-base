@@ -1,17 +1,20 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Action, PayloadAction } from "@reduxjs/toolkit";
-import { put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import { Cart } from "../../models/Cart";
 import { cartActions } from "./cartSlice";
 
+export async function getCarts(): Promise<Cart[]> {
+  const carts = await AsyncStorage.getItem("@carts");
+  return JSON.parse(carts ?? "[]");
+}
+
 function* fetchCarts() {
   try {
-    const carts : any = async () => {
-        return await AsyncStorage.getItem("@carts");
-    };
-    if (carts !== null) {
-      yield put(cartActions.fetchCartSuccess(JSON.parse(carts)));
-    }
+    const carts: Cart[] = yield call(getCarts);
+    yield put(cartActions.fetchCartSuccess(carts));
+    yield put(cartActions.getQuantity());
+    yield put(cartActions.getTotalPrice());
   } catch (error) {
     yield put(cartActions.fetchCartFailed());
   }

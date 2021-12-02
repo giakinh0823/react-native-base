@@ -23,7 +23,7 @@ const Checkout = ({totalPrice, checkout}: Props) => {
   );
 };
 
-export default Checkout;
+export default React.memo(Checkout);
 
 const styles = StyleSheet.create({
   container: {

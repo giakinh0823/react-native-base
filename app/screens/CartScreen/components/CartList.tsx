@@ -12,7 +12,7 @@ interface Props {
 
 const CartList = ({ navigation, cartList }: Props) => {
   const dispatch = React.useCallback(useAppDispatch(), []);
-
+  
   const setQuantity = React.useCallback(
     (productId: number, quantity: number) => {
       dispatch(cartActions.setQuantity({ id: productId, quantity: quantity }));
@@ -52,7 +52,7 @@ const CartList = ({ navigation, cartList }: Props) => {
   );
 };
 
-export default React.memo(CartList);
+export default CartList;
 
 const styles = StyleSheet.create({
   container: {

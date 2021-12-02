@@ -1,17 +1,20 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { put, takeLatest } from "redux-saga/effects";
-import { Cart } from '../../models';
+import { call, put, takeLatest } from "redux-saga/effects";
+import { Cart, Order } from '../../models';
 import { orderActions } from './OrderSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export async function getOrders(): Promise<Order[]> {
+  const orders = await AsyncStorage.getItem("@orders");
+  return JSON.parse(orders ?? "[]");
+}
+
 function* fetchOrders() {
   try {
-    const orders : any = async () => {
-        return await AsyncStorage.getItem("@orders");
-    };
-    if (orders !== null) {
-      yield put(orderActions.fetchOrderSuccess(JSON.parse(orders)));
-    }
+    const orders: Order[] = yield call(getOrders);
+    yield put(orderActions.fetchOrderSuccess(orders));
+    yield put(orderActions.getQuantity());
+    yield put(orderActions.getTotalPrice());
   } catch (error) {
     yield put(orderActions.fetchOrderFailed());
   }
